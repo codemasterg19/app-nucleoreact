@@ -99,7 +99,7 @@ export default function AddScoreScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🎮 Registro de Puntajes</Text>
+      <Text style={styles.title}>Registro de Puntajes</Text>
 
       <TextInput
         placeholder='ID de usuario'
