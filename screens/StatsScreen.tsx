@@ -7,32 +7,68 @@ import { onValue, ref } from 'firebase/database';
 export default function StatsScreen() {
   const [puntajes, setPuntajes] = useState<number[]>([]);
   const [userId, setUserId] = useState('');
+  const cantidad = puntajes.length;
+  const [juegoFrecuente, setJuegoFrecuente] = useState('');
+
+  
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserId(user.uid);
         const scoresRef = ref(db, 'users/' + user.uid + '/scores');
+  
         onValue(scoresRef, (snapshot) => {
           const data = snapshot.val();
+  
           if (data) {
+            // ✅ Puntajes
             const scores = Object.values(data).map((item: any) => item.score || 0);
             setPuntajes(scores);
+  
+            // ✅ Juego más frecuente
+            const contador: Record<string, number> = {};
+            Object.values(data).forEach((item: any) => {
+              if (item.game) {
+                contador[item.game] = (contador[item.game] || 0) + 1;
+              }
+            });
+  
+            const masRepetido = Object.entries(contador).reduce(
+              (a, b) => (a[1] > b[1] ? a : b),
+              ['', 0]
+            );
+  
+            setJuegoFrecuente(masRepetido[0]);
+  
           } else {
             setPuntajes([]);
+            setJuegoFrecuente('');
           }
         });
       }
     });
   }, []);
-
+  
   const total = puntajes.reduce((acc, val) => acc + val, 0);
   const max = puntajes.length > 0 ? Math.max(...puntajes) : 0;
   const avg = puntajes.length > 0 ? (total / puntajes.length).toFixed(2) : 0;
 
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Puntuaciones</Text>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>Cantidad de Juegos Registrados</Text>
+        <Text style={styles.value}>{cantidad}</Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>Juego Más Frecuente</Text>
+        <Text style={styles.value}>{juegoFrecuente || 'N/A'}</Text>
+      </View>
+
 
       <View style={styles.card}>
         <Text style={styles.label}>Puntaje Total</Text>
@@ -50,12 +86,13 @@ export default function StatsScreen() {
       </View>
     </View>
   );
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+
     paddingHorizontal: 16,
     paddingTop: 40,
   },

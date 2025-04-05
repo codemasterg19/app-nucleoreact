@@ -14,6 +14,7 @@ export default function AddScoreScreen() {
   const [score, setscore] = useState(0)
   const [date, setdate] = useState("")
 
+
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const [juegos, setJuegos] = useState<any[]>([]);

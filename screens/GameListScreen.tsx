@@ -6,6 +6,7 @@ export default function GameListScreen({navigation}: any) {
 
   const [data, setdata] = useState([])
  const [error, setError] = useState('');
+ 
 
  const getData = async () => {
   try {
