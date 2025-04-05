@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/config';
@@ -14,12 +14,20 @@ export default function WelcomeScreen({navigation}: any) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!emailRegex.test(email)) {
-    alert("❗ Ingresa un correo electrónico válido");
+    Alert.alert(
+      "Correo inválido",
+      "Por favor, ingresa un correo electrónico válido (ejemplo@correo.com).",
+      [{ text: "Entendido" }]
+    );
     return;
   }
 
   if (password.length < 6) {
-    alert("❗ La contraseña debe tener al menos 6 caracteres");
+    Alert.alert(
+      "Contraseña inválida",
+      "La contraseña debe tener al menos 6 caracteres.",
+      [{ text: "Ok" }]
+    );
     return;
   }
 
@@ -27,14 +35,22 @@ export default function WelcomeScreen({navigation}: any) {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        alert("✅ Sesión iniciada correctamente");
+        Alert.alert(
+          "Sesión iniciada",
+          "Bienvenido nuevamente.",
+          [{ text: "Continuar" }]
+        );
         navigation.navigate("Tab")
         //console.log(user.uid)
 
         // ...
       })
       .catch((error) => {
-        alert("❌ Datos incorrectos");
+        Alert.alert(
+          "Error al iniciar sesión",
+          "El correo o la contraseña son incorrectos. Intenta de nuevo.",
+          [{ text: "Reintentar" }]
+        );
         const errorCode = error.code;
         const errorMessage = error.message;
       });
