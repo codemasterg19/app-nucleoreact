@@ -24,7 +24,7 @@ useEffect(() => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Videojuegos</Text>
+      <Text style={styles.title}>Lista de Videojuegos</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => <Tarjeta datos={item} />}
@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f1f5f9',
     paddingHorizontal: 16,
-    paddingTop: 20,
+    paddingTop: 40, 
   },
   title: {
-    fontSize: 22,
+    fontSize: 26, 
     fontWeight: 'bold',
-    marginBottom: 12,
-    color: '#1f2937',
+    marginBottom: 24, 
+    color: '#0f172a', 
     textAlign: 'center',
   },
   list: {

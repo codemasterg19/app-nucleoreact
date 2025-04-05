@@ -8,7 +8,20 @@ export default function WelcomeScreen({navigation}: any) {
   const [email, setemail] = useState("")
   const [password, setpassword] = useState("")
 
+
+  
   function Login() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    alert("❗ Ingresa un correo electrónico válido");
+    return;
+  }
+
+  if (password.length < 6) {
+    alert("❗ La contraseña debe tener al menos 6 caracteres");
+    return;
+  }
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -21,7 +34,7 @@ export default function WelcomeScreen({navigation}: any) {
         // ...
       })
       .catch((error) => {
-        alert("❌ Error al iniciar sesión");
+        alert("❌ Datos incorrectos");
         const errorCode = error.code;
         const errorMessage = error.message;
       });

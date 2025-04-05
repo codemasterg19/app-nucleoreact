@@ -9,6 +9,8 @@ import HomeScreen from '../screens/HomeScreen';
 import AddScoreScreen from '../screens/AddScoreScreen';
 import StatsScreen from '../screens/StatsScreen';
 import GameListScreen from '../screens/GameListScreen';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 
 const Stack = createStackNavigator();
@@ -26,7 +28,35 @@ function MyStack() {
 
 function MyTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }: any) => ({
+        headerShown: false,
+        tabBarActiveTintColor: '#10b981',      // verde activo
+        tabBarInactiveTintColor: '#6b7280',    // gris inactivo
+        tabBarStyle: {
+          backgroundColor: '#fff',
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
+          height: 60,
+          paddingBottom: 6,
+        },
+        tabBarIcon: ({ focused, color, size }: any) => {
+          let iconName = '';
+
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'RegistroJuegos') {
+            iconName = focused ? 'create' : 'create-outline';
+          } else if (route.name === 'Stats') {
+            iconName = focused ? 'stats-chart' : 'stats-chart-outline';
+          } else if (route.name === 'Juegos') {
+            iconName = focused ? 'game-controller' : 'game-controller-outline';
+          }
+
+          return <Ionicons name={iconName} size={22} color={color} />;
+        },
+      })}
+    >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="RegistroJuegos" component={AddScoreScreen} />
       <Tab.Screen name="Stats" component={StatsScreen} />
